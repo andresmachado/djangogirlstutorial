@@ -1,8 +1,11 @@
-from django.shortcuts import render, get_object_or_404
+from django.http import *
+from django.shortcuts import render, get_object_or_404, redirect, render_to_response
+from django.template import RequestContext
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
 from django.utils import timezone
 from .forms import PostForm
 from .models import Post
-from django.shortcuts import redirect
 
 
 def post_list(request):
@@ -13,6 +16,21 @@ def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     return render(request, 'blog/post_detail.html', {'post': post})
 
+def login_user(request):
+    logout(request)
+    username = password = ''
+    if request.POST:
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect('blog/post_list.html')
+    return render_to_response('blog/login.html', context_instance=RequestContext(request))
+
+@login_required(login_url='/login/')
 def post_new(request):
     if request.user.is_authenticated():
         if request.method == "POST":
