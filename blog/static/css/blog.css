@@ -3,6 +3,12 @@ h1 a {
   font-family: 'Lobster';
 }
 
+.divider {
+    width:5px;
+    height:auto;
+    display:inline-block;
+}
+
 body {
   padding-left: 15px;
 }
