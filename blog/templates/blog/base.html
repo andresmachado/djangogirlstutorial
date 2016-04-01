@@ -5,7 +5,9 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Django Girls Sample Blog</title>
+    <title>
+      {% block title %} Django Girls Sample Blog {% endblock %}
+    </title>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="{% static 'css/blog.css' %}">
@@ -14,7 +16,9 @@
   <body>
     <div class="page-header">
         <a href="{% url 'blog.views.post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
-        <a href="{% url 'admin:index' %}" class="top-menu"><span class="glyphicon glyphicon-log-in"></span></a>
+        <a href="{% url 'blog.views.login_user' %}" class="top-menu"><span class="glyphicon glyphicon-log-in"></span></a>
+        <a href="{% url 'blog.views.register' %}" class="top-menu"><span class="glyphicon glyphicon-user"></span></a>
+
         <h1><a href="/">Django Girls Blog</a></h1>
     </div>
     <div class="content container">
