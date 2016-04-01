@@ -1,0 +1,11 @@
+<div class="page-header">
+{% if user.is_authenticated %}
+    <a href="{% url 'blog.views.post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus" title="Add new post"></span></a>
+    <a href="{% url 'blog.views.logout_user' %}" class="top-menu"><span class="glyphicon glyphicon-log-out" title="Logout"></span></a>
+    <a href="{% url 'user_profile' pk=request.user.pk %}" class="top-menu"><span class="glyphicon glyphicon-user" title="Profile"></span></a>
+{% else %}
+    <a href="{% url 'blog.views.login_user' %}" class="top-menu"><span class="glyphicon glyphicon-log-in" title="Login"></span></a>
+    <a href="{% url 'blog.views.register' %}" class="top-menu"><span class="glyphicon glyphicon-user" title="Sign up"></span></a>
+{% endif %}
+    <h1><a href="/">Django Girls Blog</a></h1>
+</div>

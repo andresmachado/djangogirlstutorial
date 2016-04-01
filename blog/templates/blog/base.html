@@ -14,13 +14,7 @@
     <link href="http://fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   </head>
   <body>
-    <div class="page-header">
-        <a href="{% url 'blog.views.post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
-        <a href="{% url 'blog.views.login_user' %}" class="top-menu"><span class="glyphicon glyphicon-log-in"></span></a>
-        <a href="{% url 'blog.views.register' %}" class="top-menu"><span class="glyphicon glyphicon-user"></span></a>
-
-        <h1><a href="/">Django Girls Blog</a></h1>
-    </div>
+    {% include "blog/header.html" %}
     <div class="content container">
         <div class="row">
             <div class="col-md-8">

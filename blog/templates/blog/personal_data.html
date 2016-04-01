@@ -1,0 +1,15 @@
+{% extends 'blog/user_profile.html' %}
+
+{% block content %}
+<div class="col-md-8">
+    <h2>Profile resume</h2>
+    <h3>Email:</h3>
+    <p>{{ user.email }}</p>
+    <h3>Full name</h3>
+    <p>{{ user.first_name|add:" "|add:user.last_name }}</p>
+    <h3>Username</h3>
+    <p>{{ user.username }}</p>
+    <p><a href="#">Change password</a></p>
+    <p><a href="#" class="btn btn-default btn-success">Edit profile</a></p>
+</div>
+{% endblock %}

@@ -5,7 +5,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core.context_processors import csrf
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.utils import timezone
+from django.core.urlresolvers import reverse
 from .forms import PostForm, UserCreateForm
 from .models import Post
 
@@ -33,7 +35,7 @@ def post_new(request):
             form = PostForm()
         return render(request, 'blog/post_edit.html', {'form': form})
     else:
-        return redirect('admin:index')
+        return redirect('login_user')
 
 def post_edit(request, pk):
     if request.user.is_authenticated():
@@ -50,10 +52,10 @@ def post_edit(request, pk):
             form = PostForm(instance=post)
         return render(request, 'blog/post_edit.html', {'form': form})
     else:
-        return redirect('admin:index')
+        return redirect('login_user')
 
 def login_user(request):
-    logout(request)
+    # logout(request)
     username = password = ''
     if request.POST:
         username = request.POST['username']
@@ -63,19 +65,22 @@ def login_user(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                return HttpResponseRedirect('/')
+                return HttpResponseRedirect(reverse('home'))
     return render_to_response('blog/login.html', context_instance=RequestContext(request))
+
+def logout_user(request):
+    if request.user.is_authenticated():
+        logout(request)
+        return render(request, 'blog/login.html')
+    else:
+        return redirect('home')
 
 def register(request):
     if request.method == 'POST':
         form = UserCreateForm(request.POST)
         if form.is_valid():
-            # user = User()
-            # user.first_name = request.first_name
-            # user.last_name = request.last_name
-            # user.email = request.email
             form.save()
-            return HttpResponseRedirect('/accounts/register/complete')
+            return HttpResponseRedirect(reverse('registration_complete'))
     else:
         form = UserCreateForm()
     token = {}
@@ -86,3 +91,11 @@ def register(request):
 
 def registration_complete(request):
     return render_to_response('blog/registration_complete.html')
+
+@login_required
+def user_profile(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    if request.user.id == pk:
+        return render(request, 'blog/user_profile.html', {'user': user})
+    else:
+        return render(request, 'blog/user_profile.html')
