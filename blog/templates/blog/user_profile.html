@@ -2,30 +2,5 @@
 {% block title %}Profile Settings - {{ user.first_name }} {{ user.last_name }}{% endblock %}
 
 {% block content %}
-<div class="container content">
-  <div class="row">
-    <div class="col-md-4">
-      <ul class="nav nav-pills nav-stacked">
-        <li class="active"><a href="{% url 'user_profile' pk=request.user.pk %}">Personal data</a></li>
-        <li><a href="#">Your posts</a></li>
-        <li><a href="#">Settings</a></li>
-      </ul>
-    </div>
-    <div class="col-md-8">
-      <h2>Profile resume</h2>
-      <h3>Email:</h3>
-      <p>{{ user.email }}</p>
-      <h3>Full name</h3>
-      <p>{{ user.first_name|add:" "|add:user.last_name }}</p>
-      <h3>Username</h3>
-      <p>{{ user.username }}</p>
-      <p><a href="#">Change password</a></p>
-      <p>
-        <a href="#" class="btn btn-default btn-success">Edit profile</a>
-        <span class="divider"></span>
-        <a href="#" class="btn btn-default btn-danger">Logout</a>
-      </p>
-    </div>
-  </div>
-</div>
+  {% include 'blog/personal_data.html' %}
 {% endblock %}

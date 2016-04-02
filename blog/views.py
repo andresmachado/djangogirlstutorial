@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.views.generic import DeleteView
 from django.core.urlresolvers import reverse
 from .forms import PostForm, UserCreateForm
 from .models import Post
@@ -37,22 +38,20 @@ def post_new(request):
     else:
         return redirect('login_user')
 
+@login_required
 def post_edit(request, pk):
-    if request.user.is_authenticated():
-        post = get_object_or_404(Post, pk=pk)
-        if request.method == "POST":
-            form = PostForm(request.POST, instance=post)
-            if form.is_valid():
-                post = form.save(commit=False)
-                post.author = request.user
-                post.published_date = timezone.now()
-                post.save()
-                return redirect('blog.views.post_detail', pk=post.pk)
-        else:
-            form = PostForm(instance=post)
-        return render(request, 'blog/post_edit.html', {'form': form})
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == "POST":
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.published_date = timezone.now()
+            post.save()
+            return redirect('blog.views.post_detail', pk=post.pk)
     else:
-        return redirect('login_user')
+        form = PostForm(instance=post)
+    return render(request, 'blog/post_edit.html', {'form': form})
 
 def login_user(request):
     # logout(request)
@@ -99,3 +98,8 @@ def user_profile(request, pk):
         return render(request, 'blog/user_profile.html', {'user': user})
     else:
         return render(request, 'blog/user_profile.html')
+
+@login_required
+def user_posts(request, pk):
+    posts = Post.objects.filter(author=pk).order_by('-published_date')
+    return render(request, 'blog/user_posts.html', {'posts': posts})
