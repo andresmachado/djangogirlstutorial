@@ -9,7 +9,9 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.views.generic import DeleteView
 from django.core.urlresolvers import reverse
+
 from .forms import PostForm, UserCreateForm
+from .utils import can_edit_post
 from .models import Post
 
 
@@ -41,6 +43,7 @@ def post_new(request):
 @login_required
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    request = can_edit_post(request, post)
     if request.method == "POST":
         form = PostForm(request.POST, instance=post)
         if form.is_valid():

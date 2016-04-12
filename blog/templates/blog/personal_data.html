@@ -12,7 +12,7 @@
       <h3>Email:</h3>
       <p>{{ user.email }}</p>
       <h3>Full name</h3>
-      <p>{{ user.first_name|add:" "|add:user.last_name }}</p>
+      <p>{{ user.get_full_name }}</p>
       <h3>Username</h3>
       <p>{{ user.username }}</p>
       <p><a href="#">Change password</a></p>

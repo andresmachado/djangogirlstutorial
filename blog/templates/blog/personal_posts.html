@@ -1,0 +1,26 @@
+<div class="container content">
+  <div class="row">
+    <div class="col-md-4">
+      <ul class="nav nav-pills nav-stacked">
+        <li><a href="{% url 'user_profile' pk=request.user.pk %}">Personal data</a></li>
+        <li class="active"><a href="{% url 'user_posts' pk=request.user.pk %}">Your posts</a></li>
+        <li><a href="#">Settings</a></li>
+      </ul>
+    </div>
+    <div class="col-md-7 ">
+      <h1>Your posts.</h1>
+      {% for post in posts %}
+      <div class="post">
+        <p class='date'>pubished: {{ post.published_date|date }}</p>
+        <div class=''>
+          <h3>{{ post.title }}</h3>
+        </div>
+          <p>{{ post.text|truncatechars:140 }}</p>
+        <div>
+          <a class='btn btn-default btn-success' href="{% url 'post_edit' pk=post.id %}"><span class='glyphicon glyphicon-pencil' title='Edit post'></span></a> <a href="{% url 'post_detail' pk=post.id %}" class='btn btn-default btn-primary'><span class="glyphicon glyphicon-eye-open" title='View post'></span></a>
+        </div>
+      </div>  
+      {% endfor %}
+    </div>
+  </div>
+</div>
