@@ -11,7 +11,7 @@ from django.views.generic import DeleteView
 from django.core.urlresolvers import reverse
 
 from .forms import PostForm, UserCreateForm
-from .utils import can_edit_post
+from .utils import can_edit_post, can_view_post
 from .models import Post
 
 
@@ -21,6 +21,7 @@ def post_list(request):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    request = can_view_post(request, post)
     return render(request, 'blog/post_detail.html', {'post': post})
 
 @login_required
